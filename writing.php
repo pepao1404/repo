@@ -14,6 +14,7 @@ try {
         );
         $what = $_GET['what'];
         $when = $_GET['when'];
+        $reset = $_GET['reset'];
 
     if($what and $when){
     
@@ -24,6 +25,10 @@ try {
 
     }else{
         $warning ="注：ToDoとLimitを記入してください！";
+    }
+    if($reset){
+        $delete = $pdo->exec('DELETE FROM todo');
+        echo "リセットが完了しました！";
     }
 
     $all = $pdo->prepare('SELECT * FROM todo');
