@@ -1,6 +1,6 @@
 <?php
 error_reporting(E_ALL & ~E_NOTICE); 
-//$what = $_SESSION['what'];
+session_start();
 try {
 
     $pdo = new PDO(
@@ -17,13 +17,14 @@ try {
         $reset = $_GET['reset'];
 
     if($what and $when){
+        if($_SESSION['what'] != $_GET['what']){
     
         $submit = $pdo->prepare('INSERT INTO todo VALUES(:what,:when)');
         $submit->bindValue(':what',$what);
         $submit->bindValue(':when',$when);
         $submit->execute();
 
-    }else{
+    }}else{
         $warning ="注：ToDoとLimitを記入してください！";
     }
     if($reset){
@@ -35,8 +36,8 @@ try {
     $all->execute();
     $all_list = $all->fetchAll(PDO::FETCH_NUM);
 
-} catch (PDOEXCEPTION $e) {
+} catch(PDOEXCEPTION $e){
     echo $e->getMessage();
 }
 
-
+$_SESSION['what'] = $what;
